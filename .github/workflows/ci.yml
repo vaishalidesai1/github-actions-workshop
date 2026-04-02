@@ -6,7 +6,6 @@ on:
   pull_request:
 
 # Jobs
-# Con una misma tuberia CI se pueden validar multiples confg. de entornos de ejecucion.
 jobs:
   lint:
     runs-on: ubuntu-latest
