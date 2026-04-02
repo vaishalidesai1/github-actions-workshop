@@ -22,11 +22,11 @@ def endpoint_resta(request: CalcRequest) -> dict:
 
 @app.post("/multiplicacion")
 def endpoint_multiplicacion(request: CalcRequest) -> dict:
-    """Endpoint para multiplicación"""
+    """Endpoint para multiplicacion"""
     result = mul(request.a, request.b)
     return {"operacion": "multiplicacion", "a": request.a, "b": request.b, "resultado": result}
 
 @app.get("/")
 def root() -> dict:
-    """Endpoint raíz"""
+    """Endpoint raiz"""
     return {"mensaje": "Calculator API - Endpoints: /suma, /resta, /multiplicacion"}
