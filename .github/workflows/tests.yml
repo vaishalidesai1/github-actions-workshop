@@ -1,0 +1,3 @@
+git add .github/workflows/tests.yml
+git commit -m "Add pytest workflow"
+git push
