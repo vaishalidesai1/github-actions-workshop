@@ -78,10 +78,10 @@ jobs:
         with:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-workshop
           tags: |
-            type=raw,value=latest
-            type=ref, event = branch
-            type=ref, event = tag
-            type=sha
+            type:raw,value=latest
+            type:ref, value = main, enable = {{is_branch}}
+            type:ref, event = tag
+            type:sha
       - name: Build & Push Docker image
         uses: docker/build-push-action@v6
         with:
