@@ -1,8 +1,12 @@
-name: Mi primer CI
+name: CICD
 
 # Triggers
 on:
   push:
+    branches:
+      - main
+    tags:
+      - 'v*'
   pull_request:
 
 # Jobs
@@ -42,7 +46,7 @@ jobs:
       - name: Run tests
         run: pytest
 
-  build:
+  docker-build:
     runs-on: ubuntu-latest
     needs: test
 
@@ -50,6 +54,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
       - name: Build Docker image
-        run: docker build -t calculator-app:latest .
-      - name: Verify Docker image
-        run: docker images | grep calculator-app
+        run: docker build -t github-actions-workshop:latest .
+
+  docker-push:
+    runs-on: ubuntu-latest
+    needs: docker-build 
+
+    if: github.event_name == 'push'
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract Docker metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-workshop
+      - name: Build & Push Docker image
